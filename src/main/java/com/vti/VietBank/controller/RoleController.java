@@ -1,16 +1,18 @@
 package com.vti.VietBank.controller;
 
-import com.vti.VietBank.dto.request.RoleRequest;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.vti.VietBank.dto.request.auth.RoleRequest;
 import com.vti.VietBank.dto.response.ApiResponse;
-import com.vti.VietBank.dto.response.RoleResponse;
+import com.vti.VietBank.dto.response.auth.RoleResponse;
 import com.vti.VietBank.service.IRoleService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,10 +25,7 @@ public class RoleController {
     @PostMapping()
     ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
         RoleResponse role = roleService.create(request);
-        return ApiResponse.<RoleResponse>builder()
-                .success(true)
-                .result(role)
-                .build();
+        return ApiResponse.<RoleResponse>builder().success(true).result(role).build();
     }
 
     @GetMapping
@@ -42,6 +41,7 @@ public class RoleController {
         roleService.delete(role);
         return ApiResponse.<String>builder()
                 .success(true)
-                .result("Role has been deleted").build();
+                .result("Role has been deleted")
+                .build();
     }
 }

@@ -1,4 +1,6 @@
-package com.vti.VietBank.dto.request;
+package com.vti.VietBank.dto.request.account;
+
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateUserRequest {
-    private String phoneNumber;
-    private String password;
+public class UpdateAccountRequest {
+    private BigDecimal addMoney;
 }

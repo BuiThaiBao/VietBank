@@ -24,12 +24,12 @@ public class Transaction {
 
     // Transaction from account
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_acc_id")
+    @JoinColumn(name = "from_acc")
     private Account fromAccount;
 
     // Transaction to account
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_acc_id")
+    @JoinColumn(name = "to_acc")
     private Account toAccount;
 
     @Column(nullable = false, precision = 15, scale = 2)

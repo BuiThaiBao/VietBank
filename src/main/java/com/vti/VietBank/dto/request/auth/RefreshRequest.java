@@ -1,14 +1,13 @@
-package com.vti.VietBank.dto.response;
+package com.vti.VietBank.dto.request.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PermissionResponse {
-    String name;
-    String description;
+public class RefreshRequest {
+    String token;
 }

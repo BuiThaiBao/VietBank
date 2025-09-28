@@ -1,20 +1,18 @@
-package com.vti.VietBank.dto.response;
+package com.vti.VietBank.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleResponse {
+public class PermissionRequest {
     @NotBlank
     String name;
 
     String description;
-    Set<PermissionResponse> permissions;
 }

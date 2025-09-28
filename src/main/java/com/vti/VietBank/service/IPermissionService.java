@@ -1,9 +1,9 @@
 package com.vti.VietBank.service;
 
-import com.vti.VietBank.dto.request.PermissionRequest;
-import com.vti.VietBank.dto.response.PermissionResponse;
-
 import java.util.List;
+
+import com.vti.VietBank.dto.request.auth.PermissionRequest;
+import com.vti.VietBank.dto.response.auth.PermissionResponse;
 
 public interface IPermissionService {
     public PermissionResponse create(PermissionRequest request);

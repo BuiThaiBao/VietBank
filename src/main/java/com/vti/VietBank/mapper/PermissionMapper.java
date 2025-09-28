@@ -1,12 +1,13 @@
 package com.vti.VietBank.mapper;
 
-
-import com.vti.VietBank.dto.request.PermissionRequest;
-import com.vti.VietBank.dto.response.PermissionResponse;
-import com.vti.VietBank.entity.Permission;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring")
+import com.vti.VietBank.dto.request.auth.PermissionRequest;
+import com.vti.VietBank.dto.response.auth.PermissionResponse;
+import com.vti.VietBank.entity.Permission;
+
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PermissionMapper {
     com.vti.VietBank.entity.Permission toPermission(PermissionRequest request);
 

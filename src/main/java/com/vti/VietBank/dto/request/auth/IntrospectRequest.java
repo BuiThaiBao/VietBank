@@ -1,4 +1,4 @@
-package com.vti.VietBank.dto.request;
+package com.vti.VietBank.dto.request.auth;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,6 @@
-package com.vti.VietBank.dto.request;
+package com.vti.VietBank.dto.request.account;
+
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CreateAccountRequest {
-    private Long customerId;
-    private String accountNumber;
+    private String citizenId;
+    private BigDecimal balance;
 }

@@ -18,12 +18,12 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.vti.VietBank.dto.request.AuthenticationRequest;
-import com.vti.VietBank.dto.request.IntrospectRequest;
-import com.vti.VietBank.dto.request.LogoutRequest;
-import com.vti.VietBank.dto.request.RefreshRequest;
-import com.vti.VietBank.dto.response.AuthenticationResponse;
-import com.vti.VietBank.dto.response.IntrospectResponse;
+import com.vti.VietBank.dto.request.auth.AuthenticationRequest;
+import com.vti.VietBank.dto.request.auth.IntrospectRequest;
+import com.vti.VietBank.dto.request.auth.LogoutRequest;
+import com.vti.VietBank.dto.request.auth.RefreshRequest;
+import com.vti.VietBank.dto.response.auth.AuthenticationResponse;
+import com.vti.VietBank.dto.response.auth.IntrospectResponse;
 import com.vti.VietBank.entity.InvalidatedToken;
 import com.vti.VietBank.entity.Role;
 import com.vti.VietBank.entity.User;
@@ -80,9 +80,12 @@ public class AuthenticationService implements IAuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         // Tìm user theo userName
         var user = userRepository
-                .findByUsername(request.getUsername())
+                .findByPhoneNumber(request.getPhoneNumber())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
+        if ("0".equals(user.getIsActive())) {
+            throw new AppException(ErrorCode.USER_INACTIVE);
+        }
         // Kiểm tra mật khẩu
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
@@ -102,11 +105,11 @@ public class AuthenticationService implements IAuthenticationService {
     public void logout(LogoutRequest request) {
         try {
             var signToken = verifyToken(request.getToken(), true);
-            String jit = signToken.getJWTClaimsSet().getJWTID();
+            String jwtId = signToken.getJWTClaimsSet().getJWTID();
             Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
 
             InvalidatedToken invalidatedToken =
-                    InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build();
+                    InvalidatedToken.builder().id(jwtId).expiryTime(expiryTime).build();
             invalidatedTokenRepository.save(invalidatedToken);
         } catch (AppException | ParseException | JOSEException e) {
             log.info("Token already expired ");
@@ -146,7 +149,7 @@ public class AuthenticationService implements IAuthenticationService {
 
         // Kiểm tra token đã bị vô hiệu hóa chưa
         // Những token bị vô hiệu hóa sẽ được lưu trong bảng invalidatedToken
-        if (invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getSubject()))
+        if (invalidatedTokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID()))
             throw new AppException(ErrorCode.UNAUTHENTICATED);
 
         // Nếu token hợp lệ trả về đối tượng signedJWT
@@ -172,9 +175,13 @@ public class AuthenticationService implements IAuthenticationService {
         invalidatedTokenRepository.save(invalidatedToken);
 
         // Lấy user từ token cũ
-        var username = signJWT.getJWTClaimsSet().getSubject();
-        var user =
-                userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        var phoneNumber = signJWT.getJWTClaimsSet().getSubject();
+        var user = userRepository
+                .findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+        if ("0".equals(user.getIsActive())) {
+            throw new AppException(ErrorCode.USER_INACTIVE);
+        }
 
         // Tạo token mới
         var token = generateToken(user);
@@ -192,7 +199,7 @@ public class AuthenticationService implements IAuthenticationService {
 
         // Tạo payload cho token
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(user.getPhoneNumber())
                 .issuer("VietBank")
                 .issueTime(new Date())
                 .expirationTime(new Date(
@@ -213,7 +220,6 @@ public class AuthenticationService implements IAuthenticationService {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * Xây dựng chuỗi scope cho user từ role và permission.

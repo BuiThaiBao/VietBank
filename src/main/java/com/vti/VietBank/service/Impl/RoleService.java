@@ -1,20 +1,21 @@
 package com.vti.VietBank.service.Impl;
 
+import java.util.HashSet;
+import java.util.List;
 
-import com.vti.VietBank.dto.request.RoleRequest;
-import com.vti.VietBank.dto.response.RoleResponse;
+import org.springframework.stereotype.Service;
+
+import com.vti.VietBank.dto.request.auth.RoleRequest;
+import com.vti.VietBank.dto.response.auth.RoleResponse;
 import com.vti.VietBank.mapper.RoleMapper;
 import com.vti.VietBank.repository.IPermissionRepository;
 import com.vti.VietBank.repository.IRoleRepository;
 import com.vti.VietBank.service.IRoleService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.List;
 
 @Slf4j
 @Service

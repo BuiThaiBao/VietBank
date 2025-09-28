@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     // One customers -> 1 user
     @OneToOne(fetch = FetchType.LAZY)
@@ -29,11 +29,8 @@ public class Customer {
     @Column(name = "full_name", nullable = false, length = 100)
     private String fullName;
 
-    @Column(name="email", nullable = true, unique = true, length = 255)
+    @Column(name = "email", nullable = true, unique = true, length = 255)
     private String email;
-
-    @Column(nullable = false, unique = true, length = 20)
-    private String phone;
 
     @Column(name = "citizen_id", nullable = false, unique = true, length = 20)
     private String citizenId;
@@ -42,7 +39,10 @@ public class Customer {
     private String address;
 
     @Column(name = "dob")
-    private LocalDate dateOfBirth;
+    private LocalDate dob;
+
+    @Column(nullable = false, length = 1)
+    private String isActive = "1";
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

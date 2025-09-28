@@ -32,8 +32,8 @@ public class Account {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @Column(length = 20)
-    private String status = "ACTIVE";
+    @Column(nullable = false, length = 1)
+    private String isActive = "1";
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

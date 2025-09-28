@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vti.VietBank.dto.request.CreateUserRequest;
 import com.vti.VietBank.dto.request.UpdateUserRequest;
 import com.vti.VietBank.dto.response.UserResponse;
 import com.vti.VietBank.entity.User;
-import com.vti.VietBank.enums.Role;
 import com.vti.VietBank.exception.AppException;
 import com.vti.VietBank.exception.ErrorCode;
 import com.vti.VietBank.mapper.UserMapper;
@@ -63,22 +61,23 @@ public class UserService implements IUserService {
                 userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS)));
     }
 
-    @Override
-    public UserResponse getUserByUsername(String username) {
-        return userMapper.toResponse(
-                userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS)));
-    }
+    //    @Override
+    //    public UserResponse getUserByUsername(String username) {
+    //        return userMapper.toResponse(
+    //                userRepository.findByUsername(username).orElseThrow(() -> new
+    // AppException(ErrorCode.USER_NOT_EXISTS)));
+    //    }
 
-    @Override
-    public UserResponse createUser(CreateUserRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
-        }
-        User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setRole(Role.CUSTOMER);
-        return userMapper.toResponse(userRepository.save(user));
-    }
+    //    @Override
+    //    public UserResponse createUser(CreateUserRequest request) {
+    //        if (userRepository.existsByUsername(request.getUsername())) {
+    //            throw new AppException(ErrorCode.USER_EXISTED);
+    //        }
+    //        User user = userMapper.toEntity(request);
+    //        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    ////        user.setRole(Role.CUSTOMER);
+    //        return userMapper.toResponse(userRepository.save(user));
+    //    }
 
     @Override
     public UserResponse updateUser(int id, UpdateUserRequest request) {

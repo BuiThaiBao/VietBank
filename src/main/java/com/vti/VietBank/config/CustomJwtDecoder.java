@@ -1,7 +1,9 @@
 package com.vti.VietBank.config;
 
-import com.nimbusds.jose.JOSEException;
-import com.vti.VietBank.service.IAuthenticationService;
+import java.text.ParseException;
+import java.util.Objects;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -11,9 +13,9 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.text.ParseException;
-import java.util.Objects;
+import com.nimbusds.jose.JOSEException;
+import com.vti.VietBank.dto.request.auth.IntrospectRequest;
+import com.vti.VietBank.service.IAuthenticationService;
 
 @Component
 public class CustomJwtDecoder implements JwtDecoder {
@@ -31,7 +33,7 @@ public class CustomJwtDecoder implements JwtDecoder {
         try {
             // Gọi service để introspect token (check token có valid không)
             var response = authenticationService.introspectToken(
-                    com.vti.VietBank.dto.request.IntrospectRequest.builder().token(token).build());
+                    IntrospectRequest.builder().token(token).build());
             // Nếu token không hợp lệ -> ném lỗi ngay
             if (!response.isValid()) throw new JwtException("Token invalid");
         } catch (JOSEException | ParseException e) {

@@ -17,7 +17,7 @@ public enum ErrorCode {
     USER_NOT_EXISTS(1005, "User does not exist", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-
+    USER_INACTIVE(1008, "User is inactive", HttpStatus.BAD_REQUEST),
 
     // Customer
     CUSTOMER_NOT_FOUND(2001, "Customer not found", HttpStatus.NOT_FOUND),
@@ -40,14 +40,19 @@ public enum ErrorCode {
     TRANSACTION_INVALID_AMOUNT(4003, "Transaction amount must be greater than zero", HttpStatus.BAD_REQUEST),
     TRANSACTION_SAME_ACCOUNT(4004, "Cannot transfer to the same account", HttpStatus.BAD_REQUEST),
     TRANSACTION_ROLLBACK(4005, "Transaction rolled back", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNAUTHORIZED_TRANSACTION(4006, "Unauthorized transaction", HttpStatus.UNAUTHORIZED),
 
     // Validation
     VALIDATION_ERROR(5001, "Validation failed", HttpStatus.BAD_REQUEST),
     MISSING_REQUIRED_FIELD(5002, "Missing required field", HttpStatus.BAD_REQUEST),
     INVALID_FORMAT(5003, "Invalid data format", HttpStatus.BAD_REQUEST),
 
+
+
     // Role
-    ROLE_NOT_FOUND(6001,"Role not found",HttpStatus.BAD_REQUEST);
+    ROLE_NOT_FOUND(6001, "Role not found", HttpStatus.BAD_REQUEST),
+
+    SAME_ACCOUNT_TRANSFER(7001,"Must not transfer same account number",HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatus statusCode) {
         this.code = code;

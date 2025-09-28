@@ -20,15 +20,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String username;
+    @Column(name = "phone_number", nullable = false, unique = true, length = 100)
+    private String phoneNumber;
 
     @Column(nullable = false, length = 255)
     private String password;
 
-
     @ManyToOne
     private Role role;
+
+    @Column(nullable = false, length = 1)
+    private String isActive = "1";
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -37,6 +39,4 @@ public class User {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
-
 }

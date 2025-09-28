@@ -23,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/users", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token"
+        "/users", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh-token"
     };
 
     @Bean
@@ -33,7 +33,6 @@ public class SecurityConfig {
 
     @Autowired
     private CustomJwtDecoder jwtDecoder;
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -54,7 +53,7 @@ public class SecurityConfig {
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");// Bỏ prefix mặc định "SCOPE_"
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(""); // Bỏ prefix mặc định "SCOPE_"
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
@@ -63,7 +62,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.addAllowedOrigin("*");
