@@ -62,3 +62,9 @@ jwt:
   signerKey: "OpEa6c/FAqnusCQqixDPxtaNHLZ5sExi6M+2aDAGW+gMUe/yRSqN9mhmaRWb+sJ2"
   valid-duration: 3600 #ph�t
   refreshable-duration: 360000 # ph�t
+
+#springdoc:
+#  api-docs:
+#    path: /v3/api-docs
+#  swagger-ui:
+#    path: /swagger-ui.html
