@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleRequest {
-    @NotBlank
+    @NotBlank(message = "ROLE_NAME_REQUIRED")
     String name;
 
     String description;

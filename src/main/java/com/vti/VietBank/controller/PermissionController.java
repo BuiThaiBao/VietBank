@@ -2,6 +2,8 @@ package com.vti.VietBank.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.vti.VietBank.dto.request.auth.PermissionRequest;
@@ -13,7 +15,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("/permissions")
@@ -23,7 +25,7 @@ public class PermissionController {
     IPermissionService permissionService;
 
     @PostMapping()
-    ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request) {
+    ApiResponse<PermissionResponse> create(@Valid @RequestBody PermissionRequest request) {
         PermissionResponse permission = permissionService.create(request);
         return ApiResponse.<PermissionResponse>builder()
                 .success(true)

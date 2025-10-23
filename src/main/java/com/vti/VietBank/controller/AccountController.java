@@ -1,5 +1,8 @@
 package com.vti.VietBank.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.vti.VietBank.dto.request.account.CreateAccountRequest;
@@ -15,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("/accounts")
@@ -24,7 +29,7 @@ public class AccountController {
     IAccountService accountService;
 
     @PostMapping("/create-account")
-    ApiResponse<CreateAccountResponse> createCustomer(@RequestBody CreateAccountRequest request) {
+    ApiResponse<CreateAccountResponse> createCustomer(@Valid  @RequestBody CreateAccountRequest request) {
         CreateAccountResponse account = accountService.createAccount(request);
         return ApiResponse.<CreateAccountResponse>builder()
                 .success(true)
@@ -40,17 +45,19 @@ public class AccountController {
                 .build();
     }
 
-    @PutMapping("update-account/{citizenId}")
+    @PutMapping("update-account/{accountNumber}")
     ApiResponse<UpdateAccountResponse> updateAccount(
-            @PathVariable String citizenId, @RequestBody UpdateAccountRequest request) {
+            @PathVariable String accountNumber,@Valid @RequestBody UpdateAccountRequest request) {
         return ApiResponse.<UpdateAccountResponse>builder()
                 .success(true)
-                .result(accountService.updateAccount(citizenId, request))
+                .result(accountService.updateAccount(accountNumber, request))
                 .build();
     }
 
     @PutMapping("deactive-account/{accountNumber}")
-    ApiResponse<String> deActiveAccount(@PathVariable String accountNumber) {
+    ApiResponse<String> deActiveAccount(@PathVariable
+                                        @Pattern(regexp = "^\\d{10,14}$", message = "TRANSACTION_ACCOUNT_NUMBER_INVALID")
+                                        String accountNumber) {
         return ApiResponse.<String>builder()
                 .success(true)
                 .result(accountService.deActiveAccount(accountNumber))

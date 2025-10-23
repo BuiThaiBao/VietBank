@@ -1,8 +1,9 @@
-package com.vti.VietBank.dto.response;
+package com.vti.VietBank.dto.response.transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class TransactionResponse {
     private BigDecimal amount;
     //    private String transactionType;
     private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 }

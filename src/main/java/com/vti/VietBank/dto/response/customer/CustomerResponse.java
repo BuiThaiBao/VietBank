@@ -18,11 +18,11 @@ public class CustomerResponse {
     private String phoneNumber;
     private String email;
     private String address;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate dateOfBirth;
     private String isActive;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate updatedAt;
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vti.VietBank.dto.request.UpdateUserRequest;
-import com.vti.VietBank.dto.response.UserResponse;
+import com.vti.VietBank.dto.request.user.UpdateUserRequest;
+import com.vti.VietBank.dto.response.user.UserResponse;
 import com.vti.VietBank.entity.User;
 import com.vti.VietBank.exception.AppException;
 import com.vti.VietBank.exception.ErrorCode;
@@ -82,8 +82,10 @@ public class UserService implements IUserService {
     @Override
     public UserResponse updateUser(int id, UpdateUserRequest request) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
-        user.setPassword(
-                request.getPassword() != null ? passwordEncoder.encode(request.getPassword()) : user.getPassword());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         return userMapper.toResponse(userRepository.save(user));
     }
 }

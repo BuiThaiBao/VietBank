@@ -2,8 +2,8 @@ package com.vti.VietBank.service;
 
 import java.util.List;
 
-import com.vti.VietBank.dto.request.UpdateUserRequest;
-import com.vti.VietBank.dto.response.UserResponse;
+import com.vti.VietBank.dto.request.user.UpdateUserRequest;
+import com.vti.VietBank.dto.response.user.UserResponse;
 
 public interface IUserService {
 

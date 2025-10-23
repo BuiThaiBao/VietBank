@@ -50,11 +50,7 @@ public class AccountService implements IAccountService {
         Account account = new Account();
         account.setCustomer(customer);
         account.setAccountNumber(uniqueAccountNumber);
-        if (request.getBalance() != null) {
-            account.setBalance(request.getBalance());
-        } else {
-            account.setBalance(BigDecimal.ZERO);
-        }
+        account.setBalance(request.getBalance());
 
         Account savedAccount = accountRepository.save(account);
         return CreateAccountResponse.builder()
@@ -76,8 +72,7 @@ public class AccountService implements IAccountService {
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
         accountMapper.updateAccount(account, request);
         var accountBalance = account.getBalance();
-        var newAccountBalance =
-                accountBalance.add(request.getAddMoney() != null ? request.getAddMoney() : BigDecimal.ZERO);
+        var newAccountBalance = accountBalance.add(request.getAddMoney());
         account.setBalance(newAccountBalance);
 
         accountRepository.save(account);
@@ -142,7 +137,7 @@ public class AccountService implements IAccountService {
     // Tạo stk duy nhất
     private String generateUniqueAccountNumber() {
         String newAccountNumber;
-        int maxAttempts = 5; // Giới hạn số lần thử để tránh vòng lặp vô tận
+        int maxAttempts = 100; // Giới hạn số lần thử để tránh vòng lặp vô tận
 
         for (int i = 0; i < maxAttempts; i++) {
             // Gọi hàm sinh số ngẫu nhiên

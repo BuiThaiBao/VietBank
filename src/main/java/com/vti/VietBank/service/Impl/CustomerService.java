@@ -55,6 +55,7 @@ public class CustomerService implements ICustomerService {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
 
+
         if (customerRepository.existsByCitizenId(request.getCitizenId())) {
             throw new AppException(ErrorCode.CUSTOMER_CITIZENID_EXISTS);
         }
@@ -111,11 +112,14 @@ public class CustomerService implements ICustomerService {
     @PreAuthorize("hasAuthority('UPDATE_CUSTOMER')")
     @Override
     public UpdateCustomerResponse updateCustomer(int customerId, UpdateCustomerRequest request) {
-        if (customerRepository.existsByEmail(request.getEmail())) {
-            throw new AppException(ErrorCode.EMAIL_EXISTED);
-        }
         Customer customer =
                 customerRepository.findById(customerId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
+
+        if (request.getEmail() != null &&
+                customerRepository.existsByEmail(request.getEmail()) &&
+                !request.getEmail().equals(customer.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
         customerMapper.updateCustomer(customer, request);
         return customerMapper.toUpdateResponse(customerRepository.save(customer));
     }
@@ -216,10 +220,12 @@ public class CustomerService implements ICustomerService {
                 .findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTS));
 
-        if (customerRepository.existsByEmail(request.getEmail())
-                && !request.getEmail().equals(customer.getEmail())) {
+        if (request.getEmail() != null &&
+                customerRepository.existsByEmail(request.getEmail()) &&
+                !request.getEmail().equals(customer.getEmail())) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
+
         customerMapper.updateCustomer(customer, request);
         return customerMapper.toUpdateResponse(customerRepository.save(customer));
     }

@@ -2,6 +2,8 @@ package com.vti.VietBank.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.vti.VietBank.dto.request.auth.RoleRequest;
@@ -13,7 +15,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("/roles")
@@ -23,7 +25,7 @@ public class RoleController {
     IRoleService roleService;
 
     @PostMapping()
-    ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
+    ApiResponse<RoleResponse> create(@Valid @RequestBody RoleRequest request) {
         RoleResponse role = roleService.create(request);
         return ApiResponse.<RoleResponse>builder().success(true).result(role).build();
     }

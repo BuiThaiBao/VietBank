@@ -19,9 +19,9 @@ public class CustomerAccountResponse {
     private String email;
     private String address;
     private String isActive;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate updatedAt;
     private List<AccountResponse> account;
 

@@ -1,7 +1,10 @@
 package com.vti.VietBank.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.vti.VietBank.dto.request.customer.CreateCustomerRequest;
@@ -16,7 +19,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
+@Validated
 @Slf4j
 @RestController
 @RequestMapping("/customers")
@@ -33,7 +36,7 @@ public class CustomerController {
     //        return apiResponse;
     //    }
     @PostMapping("/create-customer")
-    ApiResponse<CreateCustomerResponse> createCustomer(@RequestBody CreateCustomerRequest request) {
+    ApiResponse<CreateCustomerResponse> createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
         CreateCustomerResponse customer = customerService.createCustomer(request);
         return ApiResponse.<CreateCustomerResponse>builder()
                 .success(true)
@@ -43,7 +46,7 @@ public class CustomerController {
 
     @PutMapping("update-customer/{customerId}")
     ApiResponse<UpdateCustomerResponse> updateCustomer(
-            @PathVariable int customerId, @RequestBody UpdateCustomerRequest request) {
+            @PathVariable int customerId,@Valid @RequestBody UpdateCustomerRequest request) {
         UpdateCustomerResponse updateCustomerResponse = customerService.updateCustomer(customerId, request);
         return ApiResponse.<UpdateCustomerResponse>builder()
                 .success(true)
@@ -60,7 +63,8 @@ public class CustomerController {
     }
 
     @GetMapping("view-customer-detail")
-    ApiResponse<CustomerResponse> viewCustomerDetail(@RequestParam String phoneNumber) {
+    ApiResponse<CustomerResponse> viewCustomerDetail(@RequestParam
+                                                     @Pattern(regexp = "^(0[35789][0-9]{8}|\\+84[35789][0-9]{8})$", message = "CUSTOMER_PHONE_INVALID") String phoneNumber) {
         return ApiResponse.<CustomerResponse>builder()
                 .success(true)
                 .result(customerService.getCustomerByPhoneNumber(phoneNumber))
@@ -91,7 +95,7 @@ public class CustomerController {
     }
 
     @PutMapping("/update-myinfo")
-    public ApiResponse<UpdateCustomerResponse> updateMyInfo(@RequestBody UpdateCustomerRequest request) {
+    public ApiResponse<UpdateCustomerResponse> updateMyInfo(@Valid @RequestBody UpdateCustomerRequest request) {
         UpdateCustomerResponse result = customerService.updateMyInfo(request);
         return ApiResponse.<UpdateCustomerResponse>builder()
                 .success(true)

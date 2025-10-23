@@ -18,9 +18,9 @@ public class CreateAccountResponse {
     private String fullName;
     private String accountNumber;
     private BigDecimal balance;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate updatedAt;
     private String isActive;
 

@@ -1,32 +1,33 @@
-package com.vti.VietBank.dto.request.auth;
+package com.vti.VietBank.dto.request.user;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRequest {
-    
-    // SĐT bắt buộc; chấp nhận dạng 0xxxxxxxxx (10 số, đầu 03/05/07/08/09) hoặc +84xxxxxxxxx
-    @NotBlank(message = "AUTH_PHONE_REQUIRED")
+public class CreateUserRequest {
+    // SĐT bắt buộc, định dạng VN: 0xxxxxxxxx hoặc +84xxxxxxxxx
+    @NotBlank(message = "USER_PHONE_REQUIRED")
     @Pattern(
         regexp = "^(0[35789][0-9]{8}|\\+84[35789][0-9]{8})$",
-        message = "AUTH_PHONE_INVALID"
+        message = "USER_PHONE_INVALID"
     )
-    String phoneNumber;
-
+    private String phoneNumber;
+    
     // Mật khẩu bắt buộc, tối thiểu 8 ký tự, phải có chữ hoa, chữ thường, số và ký tự đặc biệt
-    @NotBlank(message = "AUTH_PASSWORD_REQUIRED")
+    @NotBlank(message = "USER_PASSWORD_REQUIRED")
     @Size(min = 8, message = "PASSWORD_INVALID")
     @Pattern(
         regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-        message = "AUTH_PASSWORD_WEAK"
+        message = "USER_PASSWORD_WEAK"
     )
-    String password;
+    private String password;
 }

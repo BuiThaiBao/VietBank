@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import com.vti.VietBank.dto.request.CreateUserRequest;
-import com.vti.VietBank.dto.response.UserResponse;
+import com.vti.VietBank.dto.request.user.CreateUserRequest;
+import com.vti.VietBank.dto.response.user.UserResponse;
 import com.vti.VietBank.entity.Role;
 import com.vti.VietBank.entity.User;
 

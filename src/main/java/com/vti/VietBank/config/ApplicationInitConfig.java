@@ -60,7 +60,7 @@ public class ApplicationInitConfig {
             if (userRepository.findByPhoneNumber("0123456789").isEmpty()) {
                 User user = User.builder()
                         .phoneNumber("0123456789")
-                        .password(passwordEncoder.encode("admin"))
+                        .password(passwordEncoder.encode("admin123@"))
                         .role(roleAdmin)
                         .isActive("1")
                         .build();
@@ -72,7 +72,7 @@ public class ApplicationInitConfig {
             if (userRepository.findByPhoneNumber("0123456788").isEmpty()) {
                 User staff = User.builder()
                         .phoneNumber("0123456788")
-                        .password(passwordEncoder.encode("staff"))
+                        .password(passwordEncoder.encode("staff123@"))
                         .role(roleStaff)
                         .isActive("1")
                         .build();
@@ -84,7 +84,7 @@ public class ApplicationInitConfig {
             if (userRepository.findByPhoneNumber("0123456787").isEmpty()) {
                 User customer = User.builder()
                         .phoneNumber("0123456787")
-                        .password(passwordEncoder.encode("customer"))
+                        .password(passwordEncoder.encode("customer123@"))
                         .role(roleCustomer)
                         .isActive("1")
                         .build();

@@ -1,7 +1,8 @@
-package com.vti.VietBank.dto.response;
+package com.vti.VietBank.dto.response.staff;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,8 @@ public class StaffResponse {
     private String fullName;
     private String phone;
     private String position;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 }

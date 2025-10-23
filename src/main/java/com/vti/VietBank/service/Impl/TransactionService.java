@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
@@ -42,6 +43,12 @@ public class TransactionService implements ITransactionService {
 
         Account accountFrom = accountRepository.findByAccountNumber(request.getFromAccount()).orElseThrow(()-> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+        Account accountTo = accountRepository.findByAccountNumber(request.getToAccount()).orElseThrow(()-> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if(accountFrom.getAccountNumber().equals(accountTo.getAccountNumber())) {
+            throw new AppException(ErrorCode.SAME_ACCOUNT_TRANSFER);
+        }
+
         if(!accountFrom.getCustomer().getId().equals(customer.getId())) {
             throw new AppException(ErrorCode.UNAUTHORIZED_TRANSACTION);
         }
@@ -50,21 +57,22 @@ public class TransactionService implements ITransactionService {
             throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
         }
 
-        Account accountTo = accountRepository.findByAccountNumber(request.getToAccount()).orElseThrow(()-> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
-
         if (!accountTo.getIsActive().equals("1")) {
             throw new AppException(ErrorCode.ACCOUNT_INACTIVE);
         }
 
         if(accountFrom.getBalance().compareTo(request.getAmount()) < 0) {
-            throw new AppException(ErrorCode.TRANSACTION_INVALID_AMOUNT);
+            throw new AppException(ErrorCode.ACCOUNT_BALANCE_NOT_ENOUGH);
         }
 
-        if(accountFrom.getAccountNumber().equals(accountTo.getAccountNumber())) {
-            throw new AppException(ErrorCode.SAME_ACCOUNT_TRANSFER);
-        }
-        if(request.getDescription() == null) {
-            request.setDescription(accountFrom.getCustomer().getFullName() + " chuyển khoản ");
+        if(request.getDescription() == null || request.getDescription().isBlank()) {
+            request.setDescription(String.format(
+                    "%s chuyển %s VND cho %s lúc %s",
+                    accountFrom.getCustomer().getFullName(),
+                    request.getAmount(),
+                    accountTo.getCustomer().getFullName(),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            ));
         }
 
         accountFrom.setBalance(accountFrom.getBalance().subtract(request.getAmount()));
@@ -81,6 +89,24 @@ public class TransactionService implements ITransactionService {
         tx.setDescription(request.getDescription());
         tx.setCreatedAt(LocalDateTime.now());
         transactionRepository.save(tx);
+
+//        log.info("Transfer initiated - From: {}, To: {}, Amount: {}",
+//                request.getFromAccount(), request.getToAccount(), request.getAmount());
+//
+//        log.info("Account {} balance before: {}, after: {}",
+//                accountFrom.getAccountNumber(),
+//                accountFrom.getBalance(),
+//                accountFrom.getBalance().subtract(request.getAmount()));
+//
+//        log.info("Account {} balance before: {}, after: {}",
+//                accountTo.getAccountNumber(),
+//                accountTo.getBalance(),
+//                accountTo.getBalance().add(request.getAmount()));
+//
+//        accountFrom.setBalance(accountFrom.getBalance().subtract(request.getAmount()));
+//        accountTo.setBalance(accountTo.getBalance().add(request.getAmount()));
+//
+//        log.info("Transfer completed - Transaction ID: {}", tx.getId());
 
         return TransferMoneyResponse.builder()
                 .fromAccount(accountFrom.getAccountNumber())
